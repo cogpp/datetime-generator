@@ -15,6 +15,8 @@ object ArbitaryTime {
 
   lazy val uniformMonth:Gen[Month]  = Gen.oneOf(Month.values())
 
+  lazy val uniformDayOfWeek:Gen[DayOfWeek] = Gen.oneOf(DayOfWeek.values())
+
   lazy val uniformPeriod:Gen[Period] = Gen.choose(Int.MinValue,Int.MaxValue) map { d => Period.ofDays(d) }
 
   lazy val uniformDuration:Gen[Duration] = Gen.choose(Long.MinValue,Long.MaxValue) map { n => Duration.ofNanos(n) }

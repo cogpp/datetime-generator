@@ -73,4 +73,8 @@ object DateTimeProperties extends Properties("DateTime") {
   property("zonedDateTime") = forAll { (zdt:ZonedDateTime) =>
     zdt == zdt
   }
+
+  property("dayOfWeek") = forAll { (dow:DayOfWeek) =>
+    dow == dow
+  }
 }
