@@ -58,6 +58,11 @@ object ArbitaryTime {
 
   lazy val uniformYear:Gen[Year] = Gen.choose(Year.MIN_VALUE,Year.MAX_VALUE) map {y => Year.of(y)}
 
+  lazy val uniformYearMonth:Gen[YearMonth] = for {
+    year <- uniformYear
+    month <- uniformMonth
+  } yield YearMonth.of(year.getValue,month)
+
   implicit lazy val arbitraryMonth:Arbitrary[Month] = Arbitrary(uniformMonth)
 
   implicit lazy val arbitraryDuration:Arbitrary[Duration] = Arbitrary(Gen.frequency(
@@ -122,4 +127,7 @@ object ArbitaryTime {
     (1,Gen.oneOf(Year.of(Year.MAX_VALUE),Year.of(Year.MIN_VALUE))),
     (1,uniformYear)
   ))
+
+  implicit lazy val arbitraryYearMonth:Arbitrary[YearMonth] = Arbitrary(uniformYearMonth)
+
 }

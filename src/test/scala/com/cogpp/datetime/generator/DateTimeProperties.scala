@@ -65,4 +65,8 @@ object DateTimeProperties extends Properties("DateTime") {
   property("year") = forAll { (y:Year) =>
     y == y
   }
+
+  property("yearMonth") = forAll { (ym:YearMonth) =>
+    ym == ym
+  }
 }
