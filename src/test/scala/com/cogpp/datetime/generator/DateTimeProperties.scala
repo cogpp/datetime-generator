@@ -3,7 +3,7 @@ package com.cogpp.datetime.generator
 import java.time._
 
 import com.cogpp.datetime.generator.ArbitraryTime._
-import org.scalacheck.Prop.forAll
+import org.scalacheck.Prop._
 import org.scalacheck.Properties
 
 
@@ -43,7 +43,7 @@ object DateTimeProperties extends Properties("DateTime") {
   }
 
   property("localTime") = forAll { (i:LocalTime) =>
-    true
+    i == i
   }
 
   property("zoneId") = forAll { (zid:ZoneId) =>
