@@ -63,6 +63,15 @@ object ArbitaryTime {
     month <- uniformMonth
   } yield YearMonth.of(year.getValue,month)
 
+  lazy val uniformZonedDateTime:Gen[ZonedDateTime] = for {
+    localDateTime <- uniformLocalDateTime
+    zoneId <- uniformZoneId
+  } yield ZonedDateTime.of(localDateTime,zoneId)
+
+  lazy val maxZonedDateTimes:Gen[ZonedDateTime] = uniformZoneId map {zid => ZonedDateTime.of(LocalDateTime.MAX,zid)}
+
+  lazy val minZonedDateTimes:Gen[ZonedDateTime] = uniformZoneId map {zid => ZonedDateTime.of(LocalDateTime.MIN,zid)}
+
   implicit lazy val arbitraryMonth:Arbitrary[Month] = Arbitrary(uniformMonth)
 
   implicit lazy val arbitraryDuration:Arbitrary[Duration] = Arbitrary(Gen.frequency(
@@ -131,4 +140,9 @@ object ArbitaryTime {
 
   implicit lazy val arbitraryYearMonth:Arbitrary[YearMonth] = Arbitrary(uniformYearMonth)
 
+  implicit lazy val arbitraryZonedDateTime:Arbitrary[ZonedDateTime] = Arbitrary(Gen.frequency(
+    (1,maxZonedDateTimes),
+    (1,minZonedDateTimes),
+    (10,uniformZonedDateTime)
+  ))
 }

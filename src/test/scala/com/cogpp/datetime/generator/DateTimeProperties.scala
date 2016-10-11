@@ -69,4 +69,8 @@ object DateTimeProperties extends Properties("DateTime") {
   property("yearMonth") = forAll { (ym:YearMonth) =>
     ym == ym
   }
+
+  property("zonedDateTime") = forAll { (zdt:ZonedDateTime) =>
+    zdt == zdt
+  }
 }
