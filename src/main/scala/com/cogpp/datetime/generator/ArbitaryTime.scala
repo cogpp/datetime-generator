@@ -1,5 +1,6 @@
 package com.cogpp.datetime.generator
 
+import java.time
 import java.time._
 
 import org.scalacheck.{Arbitrary, Gen}
@@ -19,9 +20,9 @@ object ArbitaryTime {
 
   lazy val uniformDuration:Gen[Duration] = Gen.choose(Long.MinValue,Long.MaxValue) map { n => Duration.ofNanos(n) }
 
-  lazy val uniformRandomDateTime:Gen[LocalDateTime] =  uniformDuration map {n:Duration => LocalDateTime.of(1970,Month.JANUARY,1,0,0,0,0).plus(n)}
+  lazy val uniformLocalDateTime:Gen[LocalDateTime] =  uniformDuration map {n:Duration => LocalDateTime.of(1970,Month.JANUARY,1,0,0,0,0).plus(n)}
 
-  lazy val uniformRandomDate:Gen[LocalDate] = uniformPeriod map {d => LocalDate.of(1970,Month.JANUARY,1).plus(d) }
+  lazy val uniformLocalDate:Gen[LocalDate] = uniformPeriod map {d => LocalDate.of(1970,Month.JANUARY,1).plus(d) }
 
   lazy val uniformLocalTime:Gen[LocalTime] = Gen.choose( 0, 24 * 60 * 60 * 1000000000 - 1) map {n => LocalTime.ofNanoOfDay(n)}
 
@@ -46,6 +47,10 @@ object ArbitaryTime {
     seconds <- Gen.choose(0,maxTicks)
   } yield ZoneOffset.ofHoursMinutesSeconds(hours,minutes,seconds)
 
+  lazy val uniformOffsetDateTime:Gen[OffsetDateTime] = for {
+    localDateTime <- uniformLocalDateTime
+    zoneOffset <- uniformZoneOffset
+  } yield OffsetDateTime.of(localDateTime,zoneOffset)
 
   implicit lazy val arbitraryMonth:Arbitrary[Month] = Arbitrary(uniformMonth)
 
@@ -62,12 +67,12 @@ object ArbitaryTime {
   implicit lazy val arbitaryLocalDateTime:Arbitrary[LocalDateTime] = Arbitrary(Gen.frequency(
       (1,LocalDateTime.MIN),
       (1,LocalDateTime.MAX),
-      (1,uniformRandomDateTime)))
+      (1,uniformLocalDateTime)))
 
   implicit lazy val arbitraryLocalDate:Arbitrary[LocalDate] = Arbitrary(Gen.frequency(
     (1,LocalDate.MIN),
     (1,LocalDate.MAX),
-    (1,uniformRandomDate)
+    (1,uniformLocalDate)
   ))
 
   implicit lazy val artbitaryInstatnt:Arbitrary[Instant] = Arbitrary(Gen.frequency(
@@ -93,5 +98,11 @@ object ArbitaryTime {
     (1,ZoneOffset.MIN),
     (1,ZoneOffset.UTC),
     (1,uniformZoneOffset)
+  ))
+
+  implicit lazy val arbitaryOffsetDateTime:Arbitrary[OffsetDateTime] = Arbitrary(Gen.frequency(
+    (1,OffsetDateTime.MAX),
+    (1,OffsetDateTime.MIN),
+    (1,uniformOffsetDateTime)
   ))
 }

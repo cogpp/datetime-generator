@@ -53,4 +53,8 @@ object DateTimeProperties extends Properties("DateTime") {
   property("zoneOffset") = forAll { (z:ZoneOffset) =>
     true
   }
+
+  property("offsetDateTime") = forAll { (z:OffsetDateTime) =>
+    true
+  }
 }
