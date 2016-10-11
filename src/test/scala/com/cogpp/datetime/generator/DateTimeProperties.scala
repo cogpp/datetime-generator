@@ -61,4 +61,8 @@ object DateTimeProperties extends Properties("DateTime") {
   property("offsetTime") = forAll { (ot:OffsetTime) =>
     ot == ot
   }
+
+  property("year") = forAll { (y:Year) =>
+    y == y
+  }
 }

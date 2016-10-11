@@ -56,6 +56,8 @@ object ArbitaryTime {
     zoneOffset <- uniformZoneOffset
   } yield OffsetTime.of(localTime,zoneOffset)
 
+  lazy val uniformYear:Gen[Year] = Gen.choose(Year.MIN_VALUE,Year.MAX_VALUE) map {y => Year.of(y)}
+
   implicit lazy val arbitraryMonth:Arbitrary[Month] = Arbitrary(uniformMonth)
 
   implicit lazy val arbitraryDuration:Arbitrary[Duration] = Arbitrary(Gen.frequency(
@@ -114,5 +116,10 @@ object ArbitaryTime {
     (1,OffsetTime.MIN),
     (1,OffsetTime.MAX),
     (1,uniformOffsetTime)
+  ))
+
+  implicit lazy val artbitraryYear:Arbitrary[Year] = Arbitrary(Gen.frequency(
+    (1,Gen.oneOf(Year.of(Year.MAX_VALUE),Year.of(Year.MIN_VALUE))),
+    (1,uniformYear)
   ))
 }
