@@ -1,6 +1,6 @@
 name := """datetime-generator"""
 
-version := "0.1-SNAPASHOT"
+version := "0.1"
 
 scalaVersion := "2.11.7"
 
