@@ -26,8 +26,8 @@ object ArbitaryTime {
   lazy val uniformLocalTime:Gen[LocalTime] = Gen.choose( 0, 24 * 60 * 60 * 1000000000 - 1) map {n => LocalTime.ofNanoOfDay(n)}
 
   lazy val uniformInstant:Gen[Instant] = for {
-    epochSecond <- Gen.choose(Long.MinValue,Long.MaxValue)
-    nanoAdjustment <- Gen.choose(Long.MinValue,Long.MaxValue)
+    epochSecond <- Gen.choose(Instant.MIN.getEpochSecond,Instant.MAX.getEpochSecond)
+    nanoAdjustment <- Gen.choose(Instant.MIN.getNano,Instant.MAX.getNano)
   } yield Instant.ofEpochSecond(epochSecond,nanoAdjustment)
 
   lazy val uniformMonthDay:Gen[MonthDay] = for {
@@ -67,29 +67,30 @@ object ArbitaryTime {
 
   implicit lazy val arbitraryDuration:Arbitrary[Duration] = Arbitrary(Gen.frequency(
     (1,Duration.ZERO),
-    (1,uniformDuration)
+    (10,uniformDuration)
   ))
 
   implicit lazy val arbitraryPeriod:Arbitrary[Period] = Arbitrary(Gen.frequency(
     (1,Period.ZERO),
-    (1,uniformPeriod)
+    (10,uniformPeriod)
   ))
 
   implicit lazy val arbitaryLocalDateTime:Arbitrary[LocalDateTime] = Arbitrary(Gen.frequency(
       (1,LocalDateTime.MIN),
       (1,LocalDateTime.MAX),
-      (1,uniformLocalDateTime)))
+      (10,uniformLocalDateTime)))
 
   implicit lazy val arbitraryLocalDate:Arbitrary[LocalDate] = Arbitrary(Gen.frequency(
     (1,LocalDate.MIN),
     (1,LocalDate.MAX),
-    (1,uniformLocalDate)
+    (10,uniformLocalDate)
   ))
 
   implicit lazy val artbitaryInstatnt:Arbitrary[Instant] = Arbitrary(Gen.frequency(
     (1,Instant.EPOCH),
     (1,Instant.MAX),
-    (1,Instant.MIN)
+    (1,Instant.MIN),
+    (10,uniformInstant)
   ))
 
   implicit lazy val arbitaryTime:Arbitrary[LocalTime] = Arbitrary(Gen.frequency(
@@ -97,7 +98,7 @@ object ArbitaryTime {
     (1,LocalTime.MIN),
     (1,LocalTime.MIDNIGHT),
     (1,LocalTime.NOON),
-    (1,uniformLocalTime)
+    (10,uniformLocalTime)
   ))
 
   implicit lazy val arbitaryMonthDay:Arbitrary[MonthDay] = Arbitrary(uniformMonthDay)
@@ -108,24 +109,24 @@ object ArbitaryTime {
     (1,ZoneOffset.MAX),
     (1,ZoneOffset.MIN),
     (1,ZoneOffset.UTC),
-    (1,uniformZoneOffset)
+    (10,uniformZoneOffset)
   ))
 
   implicit lazy val arbitaryOffsetDateTime:Arbitrary[OffsetDateTime] = Arbitrary(Gen.frequency(
     (1,OffsetDateTime.MAX),
     (1,OffsetDateTime.MIN),
-    (1,uniformOffsetDateTime)
+    (10,uniformOffsetDateTime)
   ))
 
   implicit lazy val arbitraryOffsetTime:Arbitrary[OffsetTime] = Arbitrary(Gen.frequency(
     (1,OffsetTime.MIN),
     (1,OffsetTime.MAX),
-    (1,uniformOffsetTime)
+    (10,uniformOffsetTime)
   ))
 
   implicit lazy val artbitraryYear:Arbitrary[Year] = Arbitrary(Gen.frequency(
     (1,Gen.oneOf(Year.of(Year.MAX_VALUE),Year.of(Year.MIN_VALUE))),
-    (1,uniformYear)
+    (10,uniformYear)
   ))
 
   implicit lazy val arbitraryYearMonth:Arbitrary[YearMonth] = Arbitrary(uniformYearMonth)
