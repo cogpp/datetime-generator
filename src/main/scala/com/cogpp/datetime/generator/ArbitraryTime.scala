@@ -25,7 +25,7 @@ object ArbitraryTime {
 
   lazy val uniformLocalDate:Gen[LocalDate] = uniformPeriod map {d => LocalDate.of(1970,Month.JANUARY,1).plus(d) }
 
-  lazy val uniformLocalTime:Gen[LocalTime] = Gen.choose( 0, 24 * 60 * 60 * 1000000000 - 1) map {n => LocalTime.ofNanoOfDay(n)}
+  lazy val uniformLocalTime:Gen[LocalTime] = Gen.choose( 0L, 24L * 60L * 60L - 1L) map {n => LocalTime.ofSecondOfDay(n)}
 
   lazy val uniformInstant:Gen[Instant] = for {
     epochSecond <- Gen.choose(Instant.MIN.getEpochSecond,Instant.MAX.getEpochSecond)
@@ -86,7 +86,7 @@ object ArbitraryTime {
     (10,uniformPeriod)
   ))
 
-  implicit lazy val arbitaryLocalDateTime:Arbitrary[LocalDateTime] = Arbitrary(Gen.frequency(
+  implicit lazy val arbitraryLocalDateTime:Arbitrary[LocalDateTime] = Arbitrary(Gen.frequency(
       (1,LocalDateTime.MIN),
       (1,LocalDateTime.MAX),
       (10,uniformLocalDateTime)))
@@ -97,7 +97,7 @@ object ArbitraryTime {
     (10,uniformLocalDate)
   ))
 
-  implicit lazy val artbitaryInstatnt:Arbitrary[Instant] = Arbitrary(Gen.frequency(
+  implicit lazy val arbitraryInstant:Arbitrary[Instant] = Arbitrary(Gen.frequency(
     (1,Instant.EPOCH),
     (1,Instant.MAX),
     (1,Instant.MIN),
