@@ -1,8 +1,10 @@
+package com.cogpp.datetime.generator
+
 import java.time._
 
-import org.scalacheck.Properties
+import com.cogpp.datetime.generator.ArbitaryTime._
 import org.scalacheck.Prop.forAll
-import com.cogpp.ArbitaryTime._
+import org.scalacheck.Properties
 
 
 
