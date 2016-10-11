@@ -19,27 +19,27 @@ object DateTimeProperties extends Properties("DateTime") {
    */
 
   property("localDateTime") = forAll { (dt: LocalDateTime) =>
-    true
+    dt == dt
   }
 
   property("month") = forAll { (m: Month) =>
-    true
+    m == m
   }
 
   property("localDate") = forAll { (d: LocalDate) =>
-    true
+    d == d
   }
 
   property("localDuration") = forAll { (d: Duration) =>
-    true
+    d == d
   }
 
-  property("localPeriod") = forAll { (d: Period) =>
-    true
+  property("localPeriod") = forAll { (p: Period) =>
+    p == p
   }
 
   property("Instant") = forAll { (i:Instant) =>
-    true
+    i == i
   }
 
   property("localTime") = forAll { (i:LocalTime) =>
@@ -47,14 +47,18 @@ object DateTimeProperties extends Properties("DateTime") {
   }
 
   property("zoneId") = forAll { (zid:ZoneId) =>
-    true
+    zid == zid
   }
 
   property("zoneOffset") = forAll { (z:ZoneOffset) =>
-    true
+    z == z
   }
 
-  property("offsetDateTime") = forAll { (z:OffsetDateTime) =>
-    true
+  property("offsetDateTime") = forAll { (odt:OffsetDateTime) =>
+    odt == odt
+  }
+
+  property("offsetTime") = forAll { (ot:OffsetTime) =>
+    ot == ot
   }
 }

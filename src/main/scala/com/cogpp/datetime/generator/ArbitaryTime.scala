@@ -52,6 +52,11 @@ object ArbitaryTime {
     zoneOffset <- uniformZoneOffset
   } yield OffsetDateTime.of(localDateTime,zoneOffset)
 
+  lazy val uniformOffsetTime:Gen[OffsetTime] = for {
+    localTime <- uniformLocalTime
+    zoneOffset <- uniformZoneOffset
+  } yield OffsetTime.of(localTime,zoneOffset)
+
   implicit lazy val arbitraryMonth:Arbitrary[Month] = Arbitrary(uniformMonth)
 
   implicit lazy val arbitraryDuration:Arbitrary[Duration] = Arbitrary(Gen.frequency(
@@ -104,5 +109,11 @@ object ArbitaryTime {
     (1,OffsetDateTime.MAX),
     (1,OffsetDateTime.MIN),
     (1,uniformOffsetDateTime)
+  ))
+
+  implicit lazy val arbitraryOffsetTime:Arbitrary[OffsetTime] = Arbitrary(Gen.frequency(
+    (1,OffsetTime.MIN),
+    (1,OffsetTime.MAX),
+    (1,uniformOffsetTime)
   ))
 }
