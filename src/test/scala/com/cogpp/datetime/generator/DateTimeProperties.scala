@@ -2,7 +2,7 @@ package com.cogpp.datetime.generator
 
 import java.time._
 
-import com.cogpp.datetime.generator.ArbitaryTime._
+import com.cogpp.datetime.generator.ArbitraryTime._
 import org.scalacheck.Prop.forAll
 import org.scalacheck.Properties
 

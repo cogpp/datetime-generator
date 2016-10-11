@@ -11,7 +11,7 @@ import scala.collection.JavaConverters._
 /**
   * A collection of implicat vals you can use to property test with java.time
   */
-object ArbitaryTime {
+object ArbitraryTime {
 
   lazy val uniformMonth:Gen[Month]  = Gen.oneOf(Month.values())
 
