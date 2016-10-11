@@ -1,6 +1,5 @@
 package com.cogpp.datetime.generator
 
-import java.time
 import java.time._
 
 import org.scalacheck.{Arbitrary, Gen}
