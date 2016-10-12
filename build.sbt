@@ -9,6 +9,8 @@ organization := "com.cogpp"
 
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.13.2"
 
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+
 publishMavenStyle := true
 
 publishTo := {
