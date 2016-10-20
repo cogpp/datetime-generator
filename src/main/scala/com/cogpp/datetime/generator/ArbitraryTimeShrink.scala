@@ -1,7 +1,7 @@
 package com.cogpp.datetime.generator
 
-import java.time.temporal.{ChronoField, TemporalField}
-import java.time.{ OffsetDateTime, ZoneOffset}
+import java.time.temporal.{ChronoField, Temporal, TemporalField}
+import java.time.{OffsetDateTime, ZoneOffset}
 
 
 
@@ -13,7 +13,7 @@ object ArbitraryTimeShrink {
   /**
     * The machine epoch cannot easily be converted to a local epoch. see: http://bit.ly/2dRbWBZ
     */
-  def LOCAL_EPOCH = OffsetDateTime.of(1970,1,1,0,0,0,0,ZoneOffset.UTC)
+  val LOCAL_EPOCH = OffsetDateTime.of(1970,1,1,0,0,0,0,ZoneOffset.UTC)
 
   def fieldsToChange:List[TemporalField] = List(
     ChronoField.YEAR,
@@ -25,11 +25,17 @@ object ArbitraryTimeShrink {
     ChronoField.MILLI_OF_SECOND)
 
   def timeStream(time:OffsetDateTime):Stream[OffsetDateTime] = {
-    if ( time == LOCAL_EPOCH) Stream.empty
-    else {
-      val closerTime = stepCloser(time)
-      println(closerTime)
-      Stream.cons(closerTime,timeStream(closerTime))
+    println(time)
+    time match {
+      case LOCAL_EPOCH => Stream.empty
+      case t if t.getOffset != ZoneOffset.UTC && t.getYear < OffsetDateTime.MAX.getYear && t.getYear > OffsetDateTime.MIN.getYear => {
+        val utcTime = t.withOffsetSameInstant(ZoneOffset.UTC)
+        Stream.cons(utcTime,timeStream(utcTime))
+      }
+      case t => {
+        val closerTime = stepCloser(time)
+        Stream.cons(closerTime,timeStream(closerTime))
+      }
     }
   }
 
