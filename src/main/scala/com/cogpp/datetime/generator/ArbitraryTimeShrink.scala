@@ -25,18 +25,19 @@ object ArbitraryTimeShrink {
     ChronoField.MILLI_OF_SECOND)
 
   def timeStream(time:OffsetDateTime):Stream[OffsetDateTime] = {
-    println(time)
     time match {
       case LOCAL_EPOCH => Stream.empty
-      case t if t.getOffset != ZoneOffset.UTC && t.getYear < OffsetDateTime.MAX.getYear && t.getYear > OffsetDateTime.MIN.getYear => {
-        val utcTime = t.withOffsetSameInstant(ZoneOffset.UTC)
-        Stream.cons(utcTime,timeStream(utcTime))
-      }
-      case t => {
-        val closerTime = stepCloser(time)
-        Stream.cons(closerTime,timeStream(closerTime))
-      }
+      case t if t.getOffset != ZoneOffset.UTC &&
+                t.getYear < OffsetDateTime.MAX.getYear &&
+                t.getYear > OffsetDateTime.MIN.getYear =>  nextStreamItem(t, _.withOffsetSameInstant(ZoneOffset.UTC), timeStream)
+      case t => nextStreamItem(t, stepCloser, timeStream)
+
     }
+  }
+
+  def nextStreamItem(time: OffsetDateTime,curStep:OffsetDateTime=>OffsetDateTime, nextStep:OffsetDateTime=>Stream[OffsetDateTime]):Stream[OffsetDateTime] = {
+    val curTime=curStep(time)
+    Stream.cons(curTime, nextStep(curTime))
   }
 
   def stepCloser(time:OffsetDateTime):OffsetDateTime = {
