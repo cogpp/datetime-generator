@@ -3,6 +3,8 @@ package com.cogpp.datetime.generator
 import java.time.temporal.{ChronoField, Temporal, TemporalField}
 import java.time.{OffsetDateTime, ZoneOffset}
 
+import org.scalacheck.Shrink
+
 
 
 /**
@@ -53,4 +55,6 @@ object ArbitraryTimeShrink {
     time.`with`(field,((time.get(field) - LOCAL_EPOCH.get(field)) / 2) + LOCAL_EPOCH.get(field))
   }
 
+
+  implicit def shrinkOffsetDateTime:Shrink[OffsetDateTime] = Shrink { (time: OffsetDateTime) => timeStream(time) }
 }
